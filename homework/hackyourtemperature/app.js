@@ -2,7 +2,7 @@ import {API_KEY} from "./sources/keys.js";
 import fetch from "node-fetch";
 import express from 'express';
 
-function sendErrorResponse(data, response){
+function sendErrorRespons(data, response){
   if(!data.ok){
     response.status(400)
     response.send('Bad Request')
@@ -21,7 +21,7 @@ app.post('/weather',async (req, res) => {
   const cityName = req.body.cityName
   try{
     const cityRes = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${API_KEY}`);
-    sendErrorResponse(cityRes, res)
+    sendErrorRespons(cityRes, res)
 
     const cityData = await cityRes.json()
     
@@ -29,7 +29,7 @@ app.post('/weather',async (req, res) => {
     const lon = cityData[0].lon
 
     const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`)
-    sendErrorResponse(weatherRes, res)
+    sendErrorRespons(weatherRes, res)
 
     const weatherData = await weatherRes.json()
     const {name} = weatherData
